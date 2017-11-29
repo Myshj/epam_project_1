@@ -1,6 +1,7 @@
 package models;
 
 public abstract class Model {
+
     private final int id;
 
     public Model(int id) {

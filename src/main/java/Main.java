@@ -9,6 +9,7 @@ import data.wearables.Armors;
 import data.wearables.Weapons;
 import databases.Database;
 import initializers.DatabaseInitializer;
+import models.Model;
 import service.StringResourceManager;
 import service.comparators.IdComparator;
 import service.comparators.wearable_related.WeightComparator;
@@ -24,6 +25,11 @@ import java.util.Locale;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        System.out.println(Arrays.toString(Model.class.getClasses()));
+        init(args);
+    }
+
+    private static void init(String[] args) {
         Database database = new Database();
         ArmorSlots armorSlots = new ArmorSlots();
         WeaponSlots weaponSlots = new WeaponSlots();
@@ -32,7 +38,13 @@ public class Main {
         Knights knights = new Knights(armors, weapons);
 
         StringResourceManager manager = StringResourceManager.INSTANCE;
-        manager.setLocale(Locale.forLanguageTag("ru"));
+
+        try {
+            manager.setLocale(Locale.forLanguageTag(args[0]));
+        } catch (Exception ex){
+            System.err.println("No valid locale provided.");
+            System.err.println("Default locale used...");
+        }
 
         new DatabaseInitializer(
                 database,
